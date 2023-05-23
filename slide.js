@@ -20,7 +20,6 @@ export class Slide {
 
   updatePosition(clientX) {
     this.distance.totalMovement = (this.distance.startX - clientX) * 1.6;
-    //console.log('Total movido : ' + this.distance.totalMovement);
     return this.distance.finalPosition - this.distance.totalMovement;
   }
 
@@ -34,7 +33,6 @@ export class Slide {
       this.distance.startX = event.changedTouches[0].clientX;
       movetype = 'touchmove';
     }
-    //console.log('mousedown', 'posição inicial : ' + this.distance.startX);
     this.wrapper.addEventListener(movetype, this.onMove);
     this.transition(false);
   }
@@ -42,13 +40,11 @@ export class Slide {
   onMove(event) {
     const pointerPosition = event.type === 'mousemove' ? event.clientX : event.changedTouches[0].clientX;
     const finalPosition = this.updatePosition(pointerPosition);
-    //console.log('moveu', 'posição final : ' + finalPosition);
     this.moveSlide(finalPosition);
   }
 
   onEnd(event) {
     const movetype = event.type === 'mouseup' ? 'mousemove' : 'touchmove';
-    //console.log('acabou');
     this.wrapper.removeEventListener(movetype, this.onMove)
     this.distance.finalPosition = this.distance.movePosition;
     this.transition(true);
@@ -63,7 +59,6 @@ export class Slide {
     } else {
       this.changeSlide(this.index.active);
     }
-    console.log(this.distance.totalMovement);
   }
 
   addSlideEvents(){
@@ -76,7 +71,6 @@ export class Slide {
   // Slides config
   slidePosition(slide) {
     const margin = (this.wrapper.offsetWidth - slide.offsetWidth) / 2;
-    console.log(margin)
     return -(slide.offsetLeft - margin);
   }
 
@@ -85,7 +79,6 @@ export class Slide {
       const position = this.slidePosition(element);
       return {position, element}
     })
-    console.log(this.slideArray);
   }
 
   slideIndexNav(index) {
@@ -99,7 +92,7 @@ export class Slide {
 
   changeSlide(index) {
     const activeSlide = this.slideArray[index];
-    this.moveSlide(activeSlide.position)
+    this.moveSlide(activeSlide.position);
     this.slideIndexNav(index);
     this.distance.finalPosition = activeSlide.position;
     this.changeActiveClass();
@@ -126,7 +119,6 @@ export class Slide {
   }
 
   onResize() {
-    console.log('teste');
     setTimeout(() => {
       this.slidesConfig();
       this.changeSlide(this.index.active);
@@ -183,7 +175,6 @@ export class SlideNav extends Slide {
       control.innerHTML += `<li><a href="#slide${index + 1}">${index + 1}</a></li>`;
     })
     this.wrapper.appendChild(control);
-    console.log(control);
     return control;
   }
 
@@ -191,8 +182,7 @@ export class SlideNav extends Slide {
     item.addEventListener('click', (event) => {
       event.preventDefault();
       this.changeSlide(index);
-      //this.activeControlItem();
-    })
+    });
     this.wrapper.addEventListener('changeEvent', this.activeControlItem);
   }
 
